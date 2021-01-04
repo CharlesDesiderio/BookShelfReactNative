@@ -1,23 +1,40 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import { StyleSheet, Text, TextComponent, View } from 'react-native'
+import { Button, TextInput } from 'react-native'
 import BookContext from './Context'
-// import Axios from 'axios'
 
 export default SearchBar = () => {
   
+  const [textInput, setTextInput] = useState('9780140449389')
+
   return (
     <BookContext.Consumer>
       {context => (
-        <View>
+        <View style={styles.container}>
           <TextInput
-            onChangeText={isbn => context.state.handleIsbnInput(isbn)}
-            value={context.state.searchIsbnNumber}
+            style={styles.textInput}
+            onChangeText={(text) => setTextInput(text)}
+            value={textInput}
           />
-          
+          <Button onPress={() => context.state.runIsbnSearch(textInput)} title="Search" />
+          <Text>{context.state.returnedBookData.title}</Text>
         </View>
 
       )}
     </BookContext.Consumer>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    textAlign: 'center'
+  },
+  textInput: {
+    padding: 4,
+    textAlign: 'center',
+    borderStyle: 'solid',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    borderRadius: 3
+  }
+})
